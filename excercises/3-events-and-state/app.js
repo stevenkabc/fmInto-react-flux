@@ -6,7 +6,7 @@ const ContentToggle = React.createClass({
   getInitialState () {
     return {
       showDetails: false
-    }
+    };
   },
   renderDetails () {
     const showStuff = this.state.showDetails;
@@ -17,7 +17,7 @@ const ContentToggle = React.createClass({
   },
   toggle () {
     this.setState({
-      showDeails: !this.state.showDeails
+      showDetails: !this.state.showDetails
     })
   },
   render() {
