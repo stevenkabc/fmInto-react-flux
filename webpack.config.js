@@ -3,6 +3,8 @@ var path = require('path');
 var webpack = require('webpack');
 var CODE = __dirname+'/excercises';
 var React = require('react');
+var ReactDOM = require('react-dom');
+var ReactDOMServer =  require('react-dom/server')
 
 makeIndex();
 
@@ -23,10 +25,27 @@ module.exports = {
     publicPath: '/__build__/'
   },
 
+  stats: {
+      colors: true,
+      reasons: true
+    },
+    resolve: {
+        alias: {
+
+            // temporary fix for missing require in `react-ga`
+            // cf. https://github.com/react-ga/react-ga/issues/53
+            'react/lib/Object.assign': 'object-assign',
+
+        },
+    },
+
   module: {
+    preLoaders: [
+      { test: /\.jsx?$/, loader: 'eslint-loader', exclude: /node_modules/ }
+    ],
     loaders: [
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.js$/, loader: 'jsx-loader?harmony' }
+      { test: /\.jsx?$/, loader: 'babel-loader' }
     ]
   },
 
@@ -42,10 +61,10 @@ function makeIndex () {
   }).map(function (dir) {
     return React.DOM.li({}, React.DOM.a({href: '/'+dir}, dir.replace(/-/g, ' ')));
   });
-  var markup = React.renderToStaticMarkup((
+  var markup = ReactDOMServer.renderToStaticMarkup((
     React.DOM.html({},
       React.DOM.link({rel: 'stylesheet', href: '/shared.css'}),
-      React.DOM.body({id: "index"},
+      React.DOM.body({id: 'index'},
         React.DOM.ul({}, list)
       )
     )
@@ -56,4 +75,3 @@ function makeIndex () {
 function isDirectory(dir) {
   return fs.lstatSync(dir).isDirectory();
 }
-

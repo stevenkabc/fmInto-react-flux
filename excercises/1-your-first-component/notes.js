@@ -1,12 +1,12 @@
 var React = require('react');
-
+var ReactDOM = require('react-dom');
 ////////////////////////////////////////////////////////////////////////////////
-React.render(React.DOM.div({}, 'hello'), document.body);
+ReactDOM.render(React.DOM.div({}, 'hello'), document.body);
 
 ////////////////////////////////////////////////////////////////////////////////
 var { div } = React.DOM;
 var element = div({}, 'hello');
-React.render(element, document.body);
+ReactDOM.render(element, document.body);
 
 ////////////////////////////////////////////////////////////////////////////////
 var { div, ul, li } = React.DOM;
@@ -67,8 +67,7 @@ var App = React.createClass({
       <div>
         <h1>hello!</h1>
         <ul>{items}<ul>
-      </div>
+      /div>
     );
   }
 });
-

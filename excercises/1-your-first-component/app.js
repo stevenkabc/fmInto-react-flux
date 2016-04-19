@@ -9,6 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var sortBy = require('sort-by');
 
 var DATA = {
@@ -22,12 +23,26 @@ var DATA = {
 };
 
 var Menu = React.createClass({
+  getInitialState () {
+    return (DATA)
+  },
   render () {
-    return null;
+    const items = this.state.items.filter( (item) => {
+      return item.type === 'mexican'
+    })
+    .sort(sortBy('name'))
+    .map( (item) => {
+      return <li key={item.id}>{item.name} </li>
+    })
+    return (
+      <div>
+        <h1>{this.state.title}</h1>
+        <h2>{items}</h2>
+      </div>
+    );
   }
 });
 
-React.render(<Menu/>, document.body, () => {
+ReactDOM.render(<Menu/>, document.getElementById('App1'), () => {
   require('./tests').run();
 });
-

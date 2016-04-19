@@ -17,49 +17,70 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var md5 = require('MD5');
 var validateEmail = require('./validateEmail');
-var warning = require('react/lib/warning');
+// var warning = require('react/lib/warning');
 
 var GRAVATAR_URL = "http://gravatar.com/avatar";
 
 var USERS = [
-  { id: 1, name: 'Ryan Florence', email: 'rpflorencegmail.com' },
-  { id: 2, name: 'Michael Jackson', email: 'mjijackson@gmail.com' }
+  { id: 1, name: 'Ryan Florence', loginID: 'rpflorence@gmail.com' },
+  { id: 2, name: 'Michael Jackson', loginID: 'mjijackson@gmail.com' }
 ];
-
 var emailType = (props, propName, componentName) => {
-  warning(
-    validateEmail(props.email),
-    `Invalid email '${props.email}' sent to 'Gravatar'. Check the render method of '${componentName}'.`
-  );
+ if (!validateEmail(props[propName])) {
+   return new Error(
+     `Invalid loginID '${props[propName]}' sent to 'Gravatar'. Check the render method of '${componentName}'.`
+   );
+ }
+};
+var sizeType = (props, propName, componentName) => {
+  if ( isNaN(parseInt(props.size)) ) {
+   return new Error(
+     `Invalid size '${props[propName]}' sent to 'Gravatar'. Check the render method of '${componentName}'.`
+   );
+ }
 };
 
+
+var {number} = React.PropTypes
 var Gravatar = React.createClass({
+
   propTypes: {
-    email: emailType
+    size: sizeType,
+    loginID: emailType
   },
 
   getDefaultProps () {
     return {
-      size: 16
+      size: "36"
+
     };
   },
 
   render () {
-    var { email, size } = this.props;
-    var hash = md5(email);
+    var { loginID, size } = this.props;
+    var hash = md5(loginID);
     var url = `${GRAVATAR_URL}/${hash}?s=${size*2}`;
     return <img src={url} width={size} />;
   }
 });
-
+var {object, arrayOf } = React.PropTypes
 var App = React.createClass({
+  propTypes: {
+    users: arrayOf(object).isRequired
+  },
+  getDefaultProps () {
+    return {
+
+    }
+  },
   render () {
-    var users = USERS.map((user) => {
+    var users = this.props.users.map((user) => {
       return (
         <li key={user.id}>
-          <Gravatar email={user.email} size={36} /> {user.name}
+          <Gravatar loginID={user.loginID} size={36} /> {user.name}
         </li>
       );
     });
@@ -72,7 +93,6 @@ var App = React.createClass({
   }
 });
 
-React.render(<App />, document.body);
+ReactDOM.render(<App users={USERS} />, document.getElementById('App1'));
 
 //require('./tests').run(Gravatar, emailType);
-
