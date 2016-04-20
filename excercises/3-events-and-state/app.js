@@ -1,55 +1,85 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+////////////////////////////////////////////////////////////////////////////////
+// Excercise:
+// - make these tabs work when you click them
+////////////////////////////////////////////////////////////////////////////////
+var React = require('react');
+var ReactDOM = require('react-dom');
+var assign = require('object-assign');
 
+var DATA = [
+  { name: 'USA', description: 'Land of the Free, Home of the brave' },
+  { name: 'China', description: 'Lots of concrete' },
+  { name: 'Russia', description: 'World Cup 2018!' },
+];
 
-const ContentToggle = React.createClass({
+var App = React.createClass({
   getInitialState () {
     return {
-      showDetails: false
-    };
-  },
-  renderDetails () {
-    const showStuff = this.state.showDetails;
-    if(showStuff)
-      return this.props.children;
-    else
-      return null;
-  },
-  toggle () {
-    this.setState({
-      showDetails: !this.state.showDetails
-    })
-  },
-  render() {
-    var summaryClassName = "ContentToggle__Summary";
-    if (this.state.showDetails) {
-      summaryClassName += " ContentToggle__Summary--open";
+      activeTabIndex: 2
     }
-    return (
-      <div className="ContentToggle">
-        <div onClick={this.toggle} className={summaryClassName}>
-          {this.props.summary}
-        </div>
-        <div className="ContentToggle__Details">
-          {this.renderDetails()}
-        </div>
-      </div>
-    )
-  }
-})
+  },
 
-const App = React.createClass({
-  render() {
+  handleTabClick (activeTabIndex) {
+    this.setState({ activeTabIndex });
+  },
+
+  renderTabs () {
+    return this.props.countries.map((country, index) => {
+      var style = this.state.activeTabIndex === index ?
+        styles.activeTab : styles.tab;
+      var clickHandler = this.handleTabClick.bind(this, index);
+      return (
+        <div key={country.name} style={style}
+          onClick={clickHandler}
+        >
+          {country.name}
+        </div>
+      );
+    });
+  },
+
+  renderPanel () {
+
+    var country = this.props.countries[this.state.activeTabIndex];
     return (
       <div>
-        <ContentToggle summary="Jerk Chicken">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-          </p>
-        </ContentToggle>
+        <p>{country.description}</p>
       </div>
-    )
-  }
-})
+    );
+  },
 
-ReactDOM.render(<App/>, document.body)
+  render () {
+    return (
+      <div style={styles.app}>
+        <div style={styles.tabs}>
+          {this.renderTabs()}
+        </div>
+        <div style={styles.tabPanels}>
+          {this.renderPanel()}
+        </div>
+      </div>
+    );
+
+  }
+});
+
+var styles = {};
+
+styles.tab = {
+  display: 'inline-block',
+  padding: 10,
+  margin: 10,
+  borderBottom: '4px solid',
+  borderBottomColor: '#ccc',
+  cursor: 'pointer'
+};
+
+styles.activeTab = assign({}, styles.tab, {
+  borderBottomColor: 'Red'
+});
+
+styles.tabPanels = {
+  padding: 10
+};
+
+ReactDOM.render(<App countries={DATA}/>, document.body);
