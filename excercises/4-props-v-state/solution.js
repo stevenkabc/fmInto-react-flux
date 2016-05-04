@@ -6,6 +6,7 @@
 // with its owner to get rerendered with a new active tab.
 ////////////////////////////////////////////////////////////////////////////////
 var React = require('react');
+var ReactDOM = require('react-dom') 
 var styles = require('./styles');
 var data = require('./data');
 
@@ -82,5 +83,4 @@ var App = React.createClass({
   }
 });
 
-React.render(<App tabs={data}/>, document.body);
-
+ReactDOM.render(<App tabs={data}/>, document.body);
