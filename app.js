@@ -3,7 +3,6 @@
 // state gets out of whack
 
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 var ContentToggle = React.createClass({
 
@@ -52,7 +51,7 @@ var ContentToggle = React.createClass({
     );
   }
 });
-/*
+
 var App = React.createClass({
   getInitialState () {
     return {
@@ -120,5 +119,3 @@ var App = React.createClass({
 });
 
 React.render(<App />, document.body);
-
-*/
