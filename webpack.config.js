@@ -15,6 +15,7 @@ module.exports = {
   entry: fs.readdirSync(CODE).reduce(function (entries, dir) {
     if (isDirectory(path.join(CODE, dir)))
       entries[dir] = path.join(CODE, dir, 'app.js');
+      console.log(entries)
     return entries;
   }, {}),
 

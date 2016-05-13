@@ -20,7 +20,7 @@ var App = React.createClass({
   },
 
   handleTabClick (activeTabIndex) {
-    this.setState({ activeTabIndex: activeTabIndex });
+    this.setState({ activeTabIndex });
   },
 
   renderTabs () {

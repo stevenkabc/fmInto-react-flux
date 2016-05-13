@@ -1,4 +1,4 @@
-var assign = require('react/lib/Object.assign');
+var assign = require('object-assign') //require('react/lib/Object.assign');
 var styles = {};
 
 styles.tab = {
@@ -19,4 +19,3 @@ styles.tabPanels = {
 };
 
 module.exports = styles;
-
