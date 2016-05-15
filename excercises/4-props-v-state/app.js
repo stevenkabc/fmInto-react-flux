@@ -7,27 +7,41 @@ const ContentToggle = require('./ContentToggle')
 const App = React.createClass({
   getInitialState () {
     return {
-      toggleAll: true,
+      toggleAll: false,
       toggleStates : {
         jerk: false,
-        taco: true
+        taco: false
       }
     }
   },
 
   toggleAll () {
+    var {toggleStates, toggleAll } = this.state;
+    var newStates = Object.keys(toggleStates)
+    .reduce((newStates, key) => {
+      console.log(key,newStates);
+      newStates[key] = !toggleAll;
+      return newStates;
+    }, {});
     this.setState({
-      toggleAll: !this.state.toggleAll,
-      toggleStates: {
-        jerk: !this.state.toggleStates.jerk,
-        taco: !this.state.toggleStates.taco,
-      }
+      toggleAll: !toggleAll,
+      toggleStates: newStates
     })
   },
+
   handleToggle (id) {
     var { toggleStates } = this.state;
     toggleStates[id] = !toggleStates[id]
-    this.setState({toggleStates})
+    this.setState({toggleStates});
+    var keys = Object.keys(toggleStates);
+    var areOpen = keys.filter(key => toggleStates[key]);
+    if (areOpen.length === keys.length) {
+      this.setState({ toggleAll: true});
+    }
+    else if (areOpen.length === 0) {
+      this.setState({ toggleAll: false});
+    }
+
   },
   render() {
     return (

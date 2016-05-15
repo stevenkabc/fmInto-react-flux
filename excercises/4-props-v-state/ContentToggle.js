@@ -1,22 +1,27 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+var classNames = require('classnames');
 //
 //
 
 const ContentToggle = React.createClass({
-  getInitialState () {
-    return {
-      showDetails: false
-    }
-  },
+
+    propTypes: {
+      summary: React.PropTypes.string,
+      isOpen: React.PropTypes.bool,
+      onToggle: React.PropTypes.func.isRequired
+    },
 
   toggle () {
-    this.setState({
-      showDetails: !this.state.showDetails
-    }, this.maybeFocus)
+    this.props.onToggle();
+  },
+
+  componentDidUpdate () {
+    this.maybeFocus();
+
   },
   maybeFocus (event) {
-    if (this.state.showDetails)
+    if (this.props.isOpen)
       this.refs.details.focus();
   },
 
@@ -27,11 +32,13 @@ const ContentToggle = React.createClass({
 
   render() {
     var details;
-    var summaryClassName = 'ContentToggle__Summary';
+    var summaryClassName = classNames(
+      'ContentToggle__Summary',
+      {'ContentToggle__Summary--open': this.props.isOpen}
+    );
 
-    if (this.state.showDetails) {
+    if (this.props.isOpen) {
       details = this.props.children;
-      summaryClassName += ' ContentToggle__Summary--open';
     }
 
     return (
