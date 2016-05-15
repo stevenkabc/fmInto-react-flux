@@ -5,6 +5,8 @@ const ContentToggle = require('./ContentToggle')
 //
 
 const App = React.createClass({
+
+
   getInitialState () {
     return {
       toggleAll: false,
@@ -18,6 +20,7 @@ const App = React.createClass({
   toggleAll () {
     var {toggleStates, toggleAll } = this.state;
     var newStates = Object.keys(toggleStates)
+
     .reduce((newStates, key) => {
       console.log(key,newStates);
       newStates[key] = !toggleAll;
