@@ -46,7 +46,7 @@ module.exports = {
     ],
     loaders: [
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.jsx?$/, loader: 'babel-loader', exclude: /node_modules/ }
+      { test: /\.jsx?$/, loader: 'babel-loader' }
     ]
   },
 
@@ -70,7 +70,7 @@ function makeIndex () {
       )
     )
   ));
-  fs.writeFileSync('./excercises/index.html', markup);
+  fs.writeFileSync('./dirTest.html', markup);
 }
 
 function isDirectory(dir) {
